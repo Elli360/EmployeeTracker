@@ -5,8 +5,8 @@ const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "",
-  database: "employeesDB"
+  password:"Df140303!",
+  database:"employeesDB"
 });
 
 connection.connect(function(error){
@@ -71,31 +71,30 @@ function viewDepartments(){
 
 }
 function addEmployees(){
-  inquirer.prompt()[
+  inquirer.prompt([
     {
       name: "first_name",
-      Type: "Input",
-      message: "What is the employee's first name?"
+      type: "input",
+      message: "What is the employee's first name?",
     },
     {
       name: "last_name",
-      Type: "Input",
+      type: "Input",
       message: "What is the employee's last name?"
-  },
-  {
+    },
+    {
       name: "role_id",
       Type: "Input",
       message: "What is the employee's role?"
-  }]
+    }
+  ]).then(function (res){
+    connection.query('INSERT INTO employee(first_name, last_name, role_id) VALUES (?)' [res.first_name, res.last_name, res.role_id],
+    function (error, data){
+      console.table(data);
+      start();
+    })
+  })
 }
-then(function(res)
-{
-connection.query('INSERT INTO employee(first_name, last_name, role_id) VALUES (?)' [res.first_name, res.last_name, res.role_id], function(error, data){
-  if (error) throw error;
-  console.table("inserted");
-  start();
-})
-})
 function updateEmployee(){
   inquirer.prompt([
     {
@@ -108,12 +107,11 @@ function updateEmployee(){
       type: "Number",
       message: "Enter new role ID to update"
     }
-  ]).then(function (response){
-    connection.query('UPDATE employee SET role_id=? WHERE first_name=?' [response.role_id, response.first_name], 
+  ]).then(function (res){
+    connection.query('UPDATE employee SET role_id=? WHERE first_name=?' [res.role_id, res.first_name], 
     function (error, data){
       console.table(data);
       start();
     })
   })
 }
-  
